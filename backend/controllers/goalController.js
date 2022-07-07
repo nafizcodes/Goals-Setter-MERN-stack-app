@@ -56,7 +56,7 @@ const updateGoal = asyncHandler(async (req, res) => {
 })
 
 
-//@desc   Get goals
+//@desc   Delete goals
 //@route  DELETE /api/goals/:id
 //@access Private
 const deleteGoal = asyncHandler(async (req, res) => {
@@ -69,7 +69,7 @@ const deleteGoal = asyncHandler(async (req, res) => {
     }
 
     await goal.remove()
-       
+
     res.status(200).json({id : req.params.id})
 
 })
