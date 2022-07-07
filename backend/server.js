@@ -1,7 +1,12 @@
 const express = require('express')   //express is our backend web framework
 const dotenv = require('dotenv').config() //to bring in our env  //config allows to create a dotenv file with our variables in it
+const colors = require('colors')
 const port = process.env.PORT || 5000  //port to run our server on it  // Port reading from .env file
 const {errorHandler} = require('./middleware/errorMiddleware')
+const connectDB = require('./config/db')
+
+connectDB()
+
 
 const app = express()
 

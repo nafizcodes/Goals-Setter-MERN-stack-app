@@ -1,12 +1,17 @@
 const asyncHandler = require('express-async-handler')
 
+//this will have bunch mongoose models
+const Goal = require('../models/goalModel')
 //@desc   Get goals
 //@route  GET /api/goals
 //@access Private
 //When we use mongoose in each of these functions to interact with database we get back a promise so we use async for promises 
 //if not try catch used like in this case, we will use a package express async handler
 const getGoals = asyncHandler(async (req, res) => {
-    res.status(200).json({message: 'Get goals'})
+
+    const goals = await Goal.find()
+
+    res.status(200).json({goals})
 })
 
 //@desc   Set goal
@@ -20,7 +25,10 @@ const setGoal = asyncHandler(async (req, res) => {
         throw new Error('Please add a text field')  
     }
 
-    res.status(200).json({message: 'Set goal'})
+    const goal = await Goal.create({
+        text: req.body.text
+    })
+    res.status(200).json({goal})
 })
 
 
@@ -28,6 +36,22 @@ const setGoal = asyncHandler(async (req, res) => {
 //@route  PUT /api/goals/:id 
 //@access Private
 const updateGoal = asyncHandler(async (req, res) => {
+    //getting the specific goal by id
+    const goal = await Goal.findById(req.params.id)
+
+    //if not goal then error thrown
+    if(!goal){
+        res.status(400)
+        throw new Error('Goal not found')
+    }
+
+    //update the goal 
+    //1st arguement is id, 2nd is the data which is the text, 3rd is the option
+    const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, 
+        req.body, {
+            new : true,  //options object
+        })
+
     res.status(200).json({message: `Update goal ${req.params.id}`})
 })
 
@@ -36,7 +60,17 @@ const updateGoal = asyncHandler(async (req, res) => {
 //@route  DELETE /api/goals/:id
 //@access Private
 const deleteGoal = asyncHandler(async (req, res) => {
-    res.status(200).json({message: `Delete goal ${req.params.id}`})
+
+    const goal = await Goal.findById(req.params.id)
+   
+    if(!goal){
+        res.status(400)
+        throw new Error('Goal not found')
+    }
+
+    await goal.remove()
+       
+    res.status(200).json({id : req.params.id})
 
 })
 
