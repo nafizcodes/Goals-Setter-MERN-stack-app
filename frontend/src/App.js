@@ -4,7 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Header from './components/Header';
 
-
+//we cannot have anything inside routes tag unless it is a route
 function App() {
   return (
     <>
