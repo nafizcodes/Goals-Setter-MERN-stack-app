@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 
@@ -48,15 +48,12 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ('Invalid user data')
     }
 
-    res.json({
-        message:'Register User'
-    })
 })
 
 //@desc   Aunthenticate new user
 //@route  POST /api/users/login
 //@access Public
-const loginUser = asyncHandler( async(req, res)  => {
+const loginUser = asyncHandler(async(req, res)  => {
     const {email, password} = req.body 
 
     //Check for user email
@@ -78,19 +75,25 @@ const loginUser = asyncHandler( async(req, res)  => {
 })
 
 //@desc   Get user
-//@route  POST /api/users/login
-//@access Public
-const getMe = (req, res) => {
-    res.json({
-        message:'User data display'
-    })
-}
+//@route  GET /api/users/me
+//@access Private
+const getMe = asyncHandler(async (req, res) => {
+   const {_id, name, email} = await User.findById(req.user.id) 
+
+   res.status(200).json({
+    id: _id,
+    name,
+    email,
+   })
+})
 
 //Generate JWT
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET,{
         expiresIn: '30d',
     } )
+
+    //sign a new token with id, the secret key and expries in 30 days
 }
 
 module.exports = {

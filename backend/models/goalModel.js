@@ -8,7 +8,7 @@ const goalSchema = mongoose.Schema(
         //we are saying that we need to have an objectID
         //ref indicates the name of the model
         type: mongoose.Schema.Types.ObjectId,
-        required:true,
+        required: true,
         ref: 'User'
     },
     text : {
