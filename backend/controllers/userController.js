@@ -32,7 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const user = await User.create({
         name,
         email,
-        password: hashedPassword
+        password: hashedPassword,
     })
 
     //check if user is created
@@ -78,7 +78,6 @@ const loginUser = asyncHandler(async(req, res)  => {
 //@route  GET /api/users/me
 //@access Private
 const getMe = asyncHandler(async (req, res) => {
-   const {_id, name, email} = await User.findById(req.user.id) 
 
    res.status(200).json(req.user)
    

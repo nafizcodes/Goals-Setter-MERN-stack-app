@@ -13,7 +13,7 @@ const getGoals = asyncHandler(async (req, res) => {
 
     const goals = await Goal.find({ user: req.user.id })
 
-    res.status(200).json({goals})
+    res.status(200).json(goals)
 })
 
 //@desc   Set goal
@@ -31,7 +31,7 @@ const setGoal = asyncHandler(async (req, res) => {
         text: req.body.text,
         user: req.user.id,
     })
-    res.status(200).json({goal})
+    res.status(200).json(goal)
 })
 
 
@@ -67,7 +67,7 @@ const updateGoal = asyncHandler(async (req, res) => {
             new : true,  //options object
         })
 
-    res.status(200).json({message: `Update goal ${req.params.id}`})
+    res.status(200).json(updatedGoal)
 })
 
 
